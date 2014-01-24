@@ -16,7 +16,7 @@ ssh "$REMOTE_HOST" mkdir -p "$WEB_FOLDER"
 ssh "$REMOTE_HOST" mkdir -p "$JAVA_FOLDER"
 
 # copy web project
-rsync -rp --delete . "$REMOTE_HOST":"$WEB_FOLDER"
+rsync -rp --exclude='bin/' --delete --delete-excluded . "$REMOTE_HOST":"$WEB_FOLDER"
 
 # copy java project
 pushd ../peddie_peertutor-java
