@@ -1,0 +1,33 @@
+#!/bin/bash
+
+REMOTE_HOST="webapp@us1.jiehan.org"
+PROJECT_FOLDER="peddie_peertutor"
+WEB_FOLDER="$PROJECT_FOLDER/web"
+JAVA_FOLDER="$PROJECT_FOLDER/java"
+
+if [ "${PWD##*/}" != "peddie_peertutor-web" ]; then
+  echo "Please cd to web project directory."
+  exit 1
+fi
+
+set -e
+
+ssh "$REMOTE_HOST" mkdir -p "$WEB_FOLDER"
+ssh "$REMOTE_HOST" mkdir -p "$JAVA_FOLDER"
+
+# copy web project
+rsync -rp --delete . "$REMOTE_HOST":"$WEB_FOLDER"
+
+# copy java project
+pushd ../peddie_peertutor-java
+mvn clean
+mvn package -DskipTests
+ssh "$REMOTE_HOST" "cd \"$JAVA_FOLDER\"; rm *.jar"
+rsync -P target/peer_tutoring-*-jar-with-dependencies.jar "$REMOTE_HOST":"$JAVA_FOLDER"
+popd
+
+# restart java project
+ssh "$REMOTE_HOST" "cd \"$JAVA_FOLDER\"; kill -9 \`cat backend.pid\`" || true
+ssh "$REMOTE_HOST" "cd \"$JAVA_FOLDER\"; nohup /opt/java/jre/bin/java -jar *.jar /tmp > /dev/null 2>&1 < /dev/null &  echo \$! > backend.pid"
+
+echo "Deployed!"
