@@ -6,6 +6,15 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, Subjects
   $scope.dutyDays = DutyDays.get();
 
   $q.all([$scope.subjects.$promise, $scope.dorms.$promise, $scope.dutyDays.$promise]).then(function (result) {
+    // do some data post-processing
+    //
+
+    // add a null entry to subjects so that user can choose to
+    // view all subjects
+    $scope.subjects.splice(0, 0, {id: 'null', name: 'All subjects'})
+
+    // create index by id for fast lookup in filters
+    //
     $scope.subjectsById = {}
     $scope.subjects.forEach(function (element, index, array) {
       $scope.subjectsById[element.id] = element;
@@ -21,7 +30,10 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, Subjects
       $scope.dutyDaysById[element.id] = element;
     });
 
+    // now watch for changes on query conditions
     $scope.$watch(function() {return angular.toJson($scope.queryObject())}, $scope.findTutors);
+
+    // initialize values and trigger an update to load initial tutors
     $scope.clearSelection();
   });
 

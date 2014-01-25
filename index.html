@@ -49,7 +49,7 @@
         <div class="panel-heading">Find tutors</div>
         <div class="panel-body">
           <form class="form-inline" role="form" ng-controller="QueryCtrl">
-            <select ng-model="$parent.subject" class="form-control">
+            <select ng-model="$parent.subject" ng-options="subject.id as subject.name group by subject.subject_area for subject in subjects" class="form-control">
               <optgroup label="I need help on&hellip;">
                 <option value="null">Any subject</option>
                 <option ng-repeat="subject in subjects" value="{{subject.id}}">{{subject.name}}</option>
@@ -57,12 +57,12 @@
             </select>
             <select ng-model="$parent.dorm" class="form-control">
               <option value="null">No dorm preference</option>
-              <optgroup label="I need tutors closest to&hellip;">
+              <optgroup label="Sort by distance&hellip;">
                 <option ng-repeat="dorm in dorms" value="{{dorm.id}}">{{dorm.name}}</option>
               </optgroup>
             </select>
             <select ng-model="$parent.dutyDay" class="form-control">
-              <optgroup label="I need help on&hellip;">
+              <optgroup label="Show tutors available on&hellip;">
                 <option value="null">Any day</option>
                 <option ng-repeat="dutyDay in dutyDays" value="{{dutyDay.id}}">{{dutyDay.name}}</option>
               </optgroup>
