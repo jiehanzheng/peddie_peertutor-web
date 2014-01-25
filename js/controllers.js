@@ -48,6 +48,12 @@ peerTutorControllers.controller('QueryCtrl', function ($scope) {
 
 });
 
-peerTutorControllers.controller('ListCtrl', function ($scope) {
-  
+peerTutorControllers.controller('ListCtrl', function ($scope, $timeout) {
+  $scope.mailtoClicked = function(tutor) {
+    // delay 100ms to let the mailto: operations finish
+    // or else chrome (as of 33) would cancel all requests
+    $timeout(function() {
+      ga('send', 'event', 'click', 'tutor', tutor.email_prefix);
+    }, 100);
+  }
 });
