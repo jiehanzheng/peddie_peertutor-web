@@ -51,10 +51,6 @@
         <div class="panel-body">
           <form class="form-inline" role="form" ng-controller="QueryCtrl">
             <select ng-model="$parent.subject" ng-options="subject.id as subject.name group by subject.subject_area for subject in subjects" class="form-control">
-              <optgroup label="I need help on&hellip;">
-                <option value="null">Any subject</option>
-                <option ng-repeat="subject in subjects" value="{{subject.id}}">{{subject.name}}</option>
-              </optgroup>
             </select>
             <select ng-model="$parent.dorm" class="form-control">
               <option value="null">No dorm preference</option>
