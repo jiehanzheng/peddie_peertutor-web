@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en" ng-app="peerTutor" ng-controller="AppCtrl">
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tutor Lookup &mdash; Peddie Peer Tutoring</title>
@@ -33,7 +32,6 @@
     ga('create', 'UA-8341880-5', 'peddie.org');
     ga('send', 'pageview');
   </script>
-
 </head>
 <body>
   <div class="container">
@@ -78,7 +76,7 @@
             <h4>
               {{scoredTutor.tutor.name}} &nbsp;
               <small style="white-space: nowrap">
-                <a ng-href="{{scoredTutor.tutor.email_prefix | mailtoLink:dutyDaysById[dutyDay]:subjectsById[subject]}}" ng-click="mailtoClicked(scoredTutor.tutor)" title="Compose an email with our template"><span class="glyphicon glyphicon-envelope"></span> {{scoredTutor.tutor.email_prefix}}</a>
+                <a ng-href="{{scoredTutor.tutor | mailtoLink:dutyDaysById[dutyDay]:subjectsById[subject]}}" ng-click="mailtoClicked(scoredTutor.tutor)" title="Compose an email with our template"><span class="glyphicon glyphicon-envelope"></span> {{scoredTutor.tutor.email_prefix}}</a>
               </small>
               <small class="pull-right">
                 <span ng-bind-html="scoredTutor.tutor.duty_days | expandAndHighlight:dutyDaysById:[dutyDay]"></span> @ 

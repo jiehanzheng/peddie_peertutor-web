@@ -33,11 +33,11 @@ peerTutorFilters.filter('makeListItemsAndHighlight', function ($sce) {
 })
 
 peerTutorFilters.filter('mailtoLink', function () {
-  return function(emailPrefix, dutyDay, subject) {
+  return function(tutor, dutyDay, subject) {
     var mailtoLink = "mailto:";
-    mailtoLink += encodeURIComponent(emailPrefix) + '@peddie.org';
+    mailtoLink += encodeURIComponent(tutor.email_prefix) + '@peddie.org';
     mailtoLink += '?subject=' + encodeURIComponent('Peer tutoring request' + ' ' + '(' + (subject === undefined ? "[insert subject]" : subject.name) + ')');
-    mailtoLink += '&body=' + encodeURIComponent('Hey,\n\nWould you be available on [this/next] ' + (dutyDay === undefined ? "[insert weekday]" : dutyDay.name) + ' for some ' + (subject === undefined ? "[insert subject]" : subject.name) + ' help?\n\nThanks a lot!\n\n[insert your name]');
+    mailtoLink += '&body=' + encodeURIComponent('Hi ' + (tutor.name.split(' ')[0]) + ',\n\nWould you be available on [this/next] ' + (dutyDay === undefined ? "[insert weekday]" : dutyDay.name) + ' for some ' + (subject === undefined ? "[insert subject]" : subject.name) + ' help?\n\nThanks a lot!\n\n[insert your name]');
 
     return mailtoLink;
   }
