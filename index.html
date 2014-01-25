@@ -23,10 +23,20 @@
   <script src="/js/services.js"></script>
   <script src="/js/filters.js"></script>
 
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-8341880-5', 'peddie.org');
+    ga('send', 'pageview');
+  </script>
+
 </head>
 <body>
-
   <div class="container">
+
     <div class="page-header">
       <h1>
         <small style="display: block">Peddie School</small>
@@ -86,7 +96,7 @@
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div id="instructions" class="col-md-4">
       <div class="panel panel-info">
         <div class="panel-heading">The new Peer Tutoring Program</div>
         <div class="panel-body">
@@ -116,12 +126,11 @@
 
     <div id="footer" class="col-md-12">
       <p class="text-muted">
-      This tutor lookup site is an <a href="https://github.com/jiehanzheng/peddie_peertutor-java" target="_blank">open source project</a> of Jiehan Zheng &rsquo;14 and Adam Yufan Zhang <abbr title="Peddie School Class of 2014 and Clarkson School Class of 2014">&rsquo;14</abbr>.<br />
-      We are looking for a few developers and maintainers for next year.&nbsp;&nbsp;<a href="mailto:jzheng-14@peddie.org" target="_blank">Send me an email</a> if you are interested!
-    </p>
+        This tutor lookup site is an <a href="https://github.com/jiehanzheng/peddie_peertutor-java" target="_blank">open source project</a> of Jiehan Zheng &rsquo;14 and Adam Yufan Zhang &rsquo;14.<br />
+        We are looking for a few developers and maintainers for next year.&nbsp;&nbsp;<a href="mailto:jzheng-14@peddie.org" target="_blank">Send me an email</a> if you are interested!
+      </p>
     </div>
 
   </div>
-
 </body>
 </html>

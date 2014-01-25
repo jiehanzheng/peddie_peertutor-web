@@ -37,6 +37,9 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, Subjects
 
   $scope.findTutors = function() {
     $scope.tutors = Tutors.get($scope.queryObject());
+    ga('send', 'event', 'query', 'subject', $scope.subject);
+    ga('send', 'event', 'query', 'dorm', $scope.dorm);
+    ga('send', 'event', 'query', 'dutyDay', $scope.dutyDay);
   };
 
 });
