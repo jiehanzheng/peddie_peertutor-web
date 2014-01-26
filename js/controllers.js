@@ -1,6 +1,6 @@
 var peerTutorControllers = angular.module('peerTutorControllers', ['chieffancypants.loadingBar', 'ngAnimate', 'ngSanitize', 'LocalStorageModule']);
 
-peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, $interval, $window, localStorageService, Subjects, Dorms, DutyDays, Tutors) {
+peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, $window, $timeout, localStorageService, Subjects, Dorms, DutyDays, Tutors) {
   $scope.subjects = Subjects.get();
   $scope.dorms = Dorms.get();
   $scope.dutyDays = DutyDays.get();
@@ -32,9 +32,20 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, $interva
     // initialize values and trigger an update to load initial tutors
     restoreSelection() || $scope.clearSelection();
 
-    tour.init();
-    tour.start();
+    // this element is visible only if the screen is wide enough
+    var tourEntryElement = angular.element('#tour_entry');
+    if (tourEntryElement.filter(':visible').length) {
+      console.debug("Width ok.  Initializing tour...");
+      $scope.tour = initializeTour();
+      $scope.tour.init();
+      $scope.tour.start();
+    } else {
+      // disable tour link forever
+      tourEntryElement.removeClass('hidden-xs').addClass('hidden');
+    }
   });
+
+  $scope.tour = undefined;
 
   $scope.clearSelection = function() {
     $scope.subject = "null";
@@ -79,94 +90,110 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, $interva
     ga('send', 'event', 'query', 'dutyDay', $scope.dutyDay);
   };
 
-  var tour = new Tour({debug: true});
-
-  var ensureNonEmptyList = function(tour) {
-    if ($scope.tutors !== undefined && $scope.tutors.length)
+  var ensureScreenWidth = function(tour) {
+    if (angular.element('#tour_entry:visible').length)
       return;
 
-    console.debug("Tutor list is empty.  Setting COMPSCI/POTTER_SOUTH as an example and returning a Promise...");
+    var deferred = $q.defer();
+    $timeout(function() {
+      deferred.reject('Screen is not wide enough for the tour to show.  Returning a rejected Promise...');
+    }, 100);
+    return deferred.promise;
+  }
 
-    $scope.subject = "COMPSCI";
-    $scope.dorm = "POTTER_SOUTH";
-    $scope.dutyDay = "null";
-    $scope.tutors = Tutors.get($scope.queryObject());
+  var initializeTour = function() {
+    var tour = new Tour({debug: true});
 
-    return $scope.tutors.$promise;
-  };
+    var ensureNonEmptyList = function(tour) {
+      if ($scope.tutors !== undefined && $scope.tutors.length)
+        return;
 
-  tour.addSteps([
-    {
-      element: '#instructions .panel-heading',
-      title: 'Welcome!',
-      content: 'Follow a quick tour to learn how to find a tutor in a few clicks! &nbsp;You can navigate through this tour with left/right arrow keys on your keyboard.',
-      placement: 'left'
-    },
-    {
-      element: '#query_form',
-      title: 'Tutor filters',
-      content: 'Select a subject, your dorm, and the weekday that you need help on. &nbsp;The list updates automatically as you select.',
-      backdrop: true
-    },
-    {
-      element: '#subject_select',
-      title: 'Subject filter',
-      content: 'Show only tutors that can tutor certain subject.',
-      backdrop: true
-    },
-    {
-      element: '#dorm_select',
-      title: 'Dorm preference',
-      content: 'Choose your dorm from the dropdown menu, and we will show tutors who live closest to you first.',
-      backdrop: true
-    },
-    {
-      element: '#day_select',
-      title: 'Day selection',
-      content: 'Make sure you always select the correct day, so that you can find tutors who are on duty that day. &nbsp;<strong>Please do not contact a tutor who is not on duty!</strong>',
-      backdrop: true
-    },
-    {
-      element: '#result_list',
-      title: 'Tutor list',
-      content: 'Here we show the all tutors that match your criteria. &nbsp;Matching elements are shown in <span class="text-success">green</span>.',
-      placement: 'top',
-      onShow: ensureNonEmptyList,
-      backdrop: true
-    },
-    {
-      element: '#result_list li.tutor:first',
-      title: 'Contacting a tutor',
-      content: 'You need to contact your tutor in advance so that your tutor can better arrange his/her time. &nbsp;In the next step we show you how to quickly email your tutor.',
-      placement: 'top',
-      onShow: ensureNonEmptyList,
-      backdrop: true
-    },
-    {
-      element: '#result_list li.tutor:first .mailto-link',
-      title: 'Quick mailto: link',
-      content: 'Click this icon to open your mail client. &nbsp;The tutor&rsquo;s email address, and template of the email will be filled in automatically through this link&mdash;so you only need to edit a few details and hit Send!',
-      onShow: ensureNonEmptyList,
-      backdrop: true
-    },
-    {
-      element: '#policies',
-      title: 'Policies',
-      content: 'Be sure to read our policies carefully so everyone will be happy!',
-      placement: 'left',
-      backdrop: true
-    },
-    {
-      element: '#tour_entry',
-      title: 'Thanks for taking the tour!',
-      content: 'You may do this tour again by clicking &ldquo;Take the tour&rdquo; any time. &nbsp;Please let <a href="mailto:jzheng-14@peddie.org">Jiehan</a> know if you have any questions on this lookup system.',
-      placement: 'left',
-      backdrop: true
-    }
-  ]);
+      console.debug("Tutor list is empty.  Setting COMPSCI/POTTER_SOUTH as an example and returning a Promise...");
+
+      $scope.subject = "COMPSCI";
+      $scope.dorm = "POTTER_SOUTH";
+      $scope.dutyDay = "null";
+      $scope.tutors = Tutors.get($scope.queryObject());
+
+      return $scope.tutors.$promise;
+    };
+
+    tour.addSteps([
+      {
+        element: '#instructions .panel-heading',
+        title: 'Welcome!',
+        content: 'Follow a quick tour to learn how to find a tutor in a few clicks!',
+        placement: 'left'
+      },
+      {
+        element: '#query_form',
+        title: 'Tutor filters',
+        content: 'Select a subject, your dorm, and the weekday that you need help on. &nbsp;The list updates automatically as you select.',
+        backdrop: true
+      },
+      {
+        element: '#subject_select',
+        title: 'Subject filter',
+        content: 'Show only tutors that can tutor certain subject.',
+        backdrop: true
+      },
+      {
+        element: '#dorm_select',
+        title: 'Dorm preference',
+        content: 'Choose your dorm from the dropdown menu, and we will show tutors who live closest to you first.',
+        backdrop: true
+      },
+      {
+        element: '#day_select',
+        title: 'Day selection',
+        content: 'Make sure you always select the correct day, so that you can find tutors who are on duty that day. &nbsp;<strong>Please do not contact a tutor who is not on duty!</strong>',
+        backdrop: true
+      },
+      {
+        element: '#result_list',
+        title: 'Tutor list',
+        content: 'Here we show the all tutors that match your criteria. &nbsp;Matching elements are shown in <span class="text-success">green</span>.',
+        placement: 'top',
+        onShow: ensureNonEmptyList,
+        backdrop: true
+      },
+      {
+        element: '#result_list li.tutor:first',
+        title: 'Contacting a tutor',
+        content: 'You need to contact your tutor in advance so that your tutor can better arrange his/her time. &nbsp;In the next step we show you how to quickly email your tutor.',
+        placement: 'top',
+        onShow: ensureNonEmptyList,
+        backdrop: true
+      },
+      {
+        element: '#result_list li.tutor:first .mailto-link',
+        title: 'Quick mailto: link',
+        content: 'Click this icon to open your mail client. &nbsp;The tutor&rsquo;s email address, and template of the email will be filled in automatically through this link&mdash;so you only need to edit a few details and hit Send!',
+        onShow: ensureNonEmptyList,
+        backdrop: true
+      },
+      {
+        element: '#policies',
+        title: 'Policies',
+        content: 'Be sure to read our policies carefully so everyone will be happy!',
+        placement: 'left',
+        backdrop: true
+      },
+      {
+        element: '#tour_entry',
+        title: 'Thanks for taking the tour!',
+        content: 'You may do this tour again by clicking &ldquo;Take the tour&rdquo; any time. &nbsp;Please let <a href="mailto:jzheng-14@peddie.org">Jiehan</a> know if you have any questions on this lookup system.',
+        placement: 'left',
+        backdrop: true
+      }
+    ]);
+
+    return tour;
+  }
 
   $scope.forceStartTour = function() {
-    tour.restart();
+    if ($scope.tour !== undefined)
+      $scope.tour.restart();
   };
 
 });
@@ -186,5 +213,5 @@ peerTutorControllers.controller('ListCtrl', function ($scope, $timeout) {
 });
 
 peerTutorControllers.config(function (localStorageServiceProvider) {
-  localStorageServiceProvider.setPrefix('');
+  localStorageServiceProvider.setPrefix('tutor_query');
 });
