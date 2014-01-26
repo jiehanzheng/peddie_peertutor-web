@@ -6,10 +6,12 @@
   <title>Tutor Lookup &mdash; Peddie Peer Tutoring</title>
 
   <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css">
   <link rel="stylesheet" type="text/css" href="/bower_components/angular-loading-bar/build/loading-bar.min.css">
 
   <script src="/bower_components/jquery/jquery.min.js"></script>
   <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
 
   <script src="/bower_components/angular/angular.min.js"></script>
   <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
@@ -43,20 +45,20 @@
       </h1>
     </div>
 
-    <div id="main" class="col-md-8">
+    <div id="main" class="col-sm-8">
       <div class="panel panel-primary">
         <div class="panel-heading">Find tutors</div>
-        <div class="panel-body">
+        <div id="query_form" class="panel-body">
           <form class="form-inline" role="form" ng-controller="QueryCtrl">
-            <select ng-model="$parent.subject" ng-options="subject.id as subject.name group by subject.subject_area for subject in subjects" class="form-control">
+            <select id="subject_select" ng-model="$parent.subject" ng-options="subject.id as subject.name group by subject.subject_area for subject in subjects" class="form-control">
             </select>
-            <select ng-model="$parent.dorm" class="form-control">
+            <select id="dorm_select" ng-model="$parent.dorm" class="form-control">
               <option value="null">No dorm preference</option>
               <optgroup label="Sort by distance&hellip;">
                 <option ng-repeat="dorm in dorms" value="{{dorm.id}}">{{dorm.name}}</option>
               </optgroup>
             </select>
-            <select ng-model="$parent.dutyDay" class="form-control">
+            <select id="day_select" ng-model="$parent.dutyDay" class="form-control">
               <optgroup label="Show tutors available on&hellip;">
                 <option value="null">Any day</option>
                 <option ng-repeat="dutyDay in dutyDays" value="{{dutyDay.id}}">{{dutyDay.name}}</option>
@@ -65,18 +67,18 @@
             <a ng-show="subject != 'null' || dorm != 'null' || dutyDay != 'null'" ng-click="clearSelection()" class="btn btn-link">Reset</a>
           </form>
         </div>
-        <ul class="list-group" ng-controller="ListCtrl">
+        <ul id="result_list" class="list-group" ng-controller="ListCtrl">
           <li ng-hide="tutors.length" class="list-group-item">
             <h4>No tutors found on your specified day :(</h4>
             <p class="list-group-item-text">
               Perhaps you can try another duty day option? &nbsp;If that didn&rsquo;t help, you may have selected a subject that we don&rsquo;t offer yet&mdash;feel free to talk to our co-presidents <a href="mailto:rjin-14@peddie.org">Richard Jin</a> and/or <a href="mailto:zjiang-14@peddie.org">Ziwen Jiang</a>.
             </p>
           </li>
-          <li ng-repeat="scoredTutor in tutors" class="list-group-item">
+          <li ng-repeat="scoredTutor in tutors" class="tutor list-group-item">
             <h4>
               {{scoredTutor.tutor.name}} &nbsp;
               <small style="white-space: nowrap">
-                <a ng-href="{{scoredTutor.tutor | mailtoLink:dutyDaysById[dutyDay]:subjectsById[subject]}}" ng-click="mailtoClicked(scoredTutor.tutor)" title="Compose an email with our template"><span class="glyphicon glyphicon-envelope"></span> {{scoredTutor.tutor.email_prefix}}</a>
+                <a class="mailto-link" ng-href="{{scoredTutor.tutor | mailtoLink:dutyDaysById[dutyDay]:subjectsById[subject]}}" ng-click="mailtoClicked(scoredTutor.tutor)" title="Compose an email with our template"><span class="glyphicon glyphicon-envelope"></span> {{scoredTutor.tutor.email_prefix}}</a>
               </small>
               <small class="pull-right">
                 <span ng-bind-html="scoredTutor.tutor.duty_days | expandAndHighlight:dutyDaysById:[dutyDay]"></span> @ 
@@ -91,7 +93,7 @@
       </div>
     </div>
 
-    <div id="instructions" class="col-md-4">
+    <div id="instructions" class="col-sm-4">
       <div class="panel panel-info">
         <div class="panel-heading">The new Peer Tutoring Program</div>
         <div class="panel-body">
@@ -100,26 +102,34 @@
           <p class="text-danger">You have to make appointments with your tutor via email/chat <em>before <strong>each</strong> visit</em>!</p>
         </div>
         <ul class="list-group">
-          <li class="list-group-item">
-            <h4 class="list-group-item-heading">1. Enter your request</h4>
-            <p class="list-group-item-text">Select your Subject, Dorm, and Date to find matching tutors. &nbsp;There is no Search button as the list updates automatically as you select.</p>
+          <li id="tour_entry" class="list-group-item hidden-xs">
+            <h4 class="list-group-item-heading">
+              <a ng-click="forceStartTour()">
+                0. Take the 30-second tour
+              </a>
+            </h4>
+            <p class="list-group-item-text">Take the interactive tour to learn how to find tutors quickly through this platform.</p>
           </li>
           <li class="list-group-item">
-            <h4 class="list-group-item-heading">2. Browse the tutor result list</h4>
-            <p class="list-group-item-text">Tutors that matches your subject are shown in the result list. &nbsp;They are sorted based on distance to your dorm.</p>
+            <h4 class="list-group-item-heading">1. Enter your request</h4>
+            <p class="list-group-item-text">Select your Subject, Dorm, and Date to find matching tutors.</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">2. Browse the tutor list</h4>
+            <p class="list-group-item-text">Tutors that matches your subject are shown in the result list.</p>
           </li>
           <li class="list-group-item">
             <h4 class="list-group-item-heading">3. Contact a tutor</h4>
-            <p class="list-group-item-text">Click the link next to your tutor&rsquo;s name to send an email (the email subject and body will be automatically filled out if you click the link).</p>
+            <p class="list-group-item-text">Click the link next to your tutor&rsquo;s name to send an email with our autocomplete template.</p>
           </li>
-          <li class="list-group-item">
+          <li id="policies" class="list-group-item">
             <p class="list-group-item-text">Contact your tutor via email or Peddie Email chat <em>at least a few hours before study hall</em>. &nbsp;Tutors are generally available 8&ndash;10 PM on duty days in their dorm lounges. &nbsp;<em>We are serious about duty days&mdash;if a tutor is not available on a certain day, do not contact him/her.</em></p>
           </li>
         </ul>
       </div>
     </div>
 
-    <div id="footer" class="col-md-12">
+    <div id="footer" class="col-sm-12">
       <p class="text-muted">
         This tutor lookup site is an <a href="https://github.com/jiehanzheng/peddie_peertutor-java" target="_blank">open source project</a> of Jiehan Zheng &rsquo;14 and Adam Yufan Zhang &rsquo;14.<br />
         We are looking for a few developers and maintainers for next year.&nbsp;&nbsp;<a href="mailto:jzheng-14@peddie.org" target="_blank">Send me an email</a> if you are interested!

@@ -19,7 +19,8 @@
     "angular-loading-bar": "~0.3.0",
     "angular-resource": "~1.2.10",
     "angular-sanitize": "~1.2.10",
+    "angular-local-storage": "",
     "bootstrap": "~3.0.3",
-    "angular-local-storage": ""
+    "bootstrap-tour": "~0.8.1"
   }
 }
