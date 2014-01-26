@@ -1,6 +1,6 @@
 var peerTutorControllers = angular.module('peerTutorControllers', ['chieffancypants.loadingBar', 'ngAnimate', 'ngSanitize', 'LocalStorageModule']);
 
-peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, $window, $timeout, localStorageService, Subjects, Dorms, DutyDays, Tutors) {
+peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageService, Subjects, Dorms, DutyDays, Tutors) {
   $scope.subjects = Subjects.get();
   $scope.dorms = Dorms.get();
   $scope.dutyDays = DutyDays.get();
@@ -45,8 +45,6 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, $window,
     }
   });
 
-  $scope.tour = undefined;
-
   $scope.clearSelection = function() {
     $scope.subject = "null";
     $scope.dorm = "null";
@@ -89,17 +87,6 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, $window,
     ga('send', 'event', 'query', 'dorm', $scope.dorm);
     ga('send', 'event', 'query', 'dutyDay', $scope.dutyDay);
   };
-
-  var ensureScreenWidth = function(tour) {
-    if (angular.element('#tour_entry:visible').length)
-      return;
-
-    var deferred = $q.defer();
-    $timeout(function() {
-      deferred.reject('Screen is not wide enough for the tour to show.  Returning a rejected Promise...');
-    }, 100);
-    return deferred.promise;
-  }
 
   var initializeTour = function() {
     var tour = new Tour({debug: true});
@@ -152,7 +139,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $http, $q, $window,
       {
         element: '#result_list',
         title: 'Tutor list',
-        content: 'Here we show the all tutors that match your criteria. &nbsp;Matching elements are shown in <span class="text-success">green</span>.',
+        content: 'Here we show all tutors that match your criteria. &nbsp;Matching elements are shown in <span class="text-success">green</span>.',
         placement: 'top',
         onShow: ensureNonEmptyList,
         backdrop: true
