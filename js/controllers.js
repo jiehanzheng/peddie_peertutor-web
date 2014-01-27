@@ -148,7 +148,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
       {
         element: '#result_list li.tutor:first',
         title: 'Contacting a tutor',
-        content: 'You need to contact your tutor in advance so that your tutor can better arrange his/her time. &nbsp;In the next step we show you how to quickly email your tutor.',
+        content: '<strong>You need to contact your tutor either before or during study hall</strong> so that your tutor can better arrange his/her time.',
         placement: 'top',
         onShow: ensureNonEmptyList,
         backdrop: true
@@ -156,7 +156,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
       {
         element: '#result_list li.tutor:first .mailto-link',
         title: 'Quick mailto: link',
-        content: 'Click this icon to open your mail client. &nbsp;The tutor&rsquo;s email address, and template of the email will be filled in automatically through this link&mdash;so you only need to edit a few details and hit Send!',
+        content: 'Click this icon to open Gmail and compose an email to this tutor. &nbsp;The tutor&rsquo;s email address, and template of the email will be filled in automatically through this link&mdash;so you only need to edit a few details and hit Send!',
         onShow: ensureNonEmptyList,
         backdrop: true
       },
@@ -197,7 +197,7 @@ peerTutorControllers.controller('ListCtrl', function ($scope, $timeout) {
     $timeout(function() {
       ga('send', 'event', 'click', 'tutor', tutor.email_prefix);
     }, 100);
-  }
+  };
 });
 
 peerTutorControllers.config(function (localStorageServiceProvider) {

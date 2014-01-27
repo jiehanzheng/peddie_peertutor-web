@@ -42,3 +42,9 @@ peerTutorFilters.filter('mailtoLink', function () {
     return mailtoLink;
   }
 });
+
+peerTutorFilters.filter('gmailHttpsMailto', function() {
+  return function(mailtoUrl) {
+    return "https://mail.google.com/a/peddie.org/?extsrc=mailto&url=" + encodeURIComponent(mailtoUrl);
+  }
+});

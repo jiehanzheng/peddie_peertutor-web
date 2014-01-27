@@ -70,7 +70,7 @@
             <h4>
               {{scoredTutor.tutor.name}} &nbsp;
               <small style="white-space: nowrap">
-                <a class="mailto-link" ng-href="{{scoredTutor.tutor | mailtoLink:dutyDaysById[dutyDay]:subjectsById[subject]}}" ng-click="mailtoClicked(scoredTutor.tutor)" title="Compose an email with our template"><span class="glyphicon glyphicon-envelope"></span> {{scoredTutor.tutor.email_prefix}}</a>
+                <a class="mailto-link" ng-href="{{scoredTutor.tutor | mailtoLink:dutyDaysById[dutyDay]:subjectsById[subject] | gmailHttpsMailto}}" ng-click="mailtoClicked(scoredTutor.tutor)" title="Compose an email with our template" target="_blank"><span class="glyphicon glyphicon-envelope"></span> {{scoredTutor.tutor.email_prefix}}</a>
               </small>
               <small class="pull-right">
                 <span ng-bind-html="scoredTutor.tutor.duty_days | expandAndHighlight:dutyDaysById:[dutyDay]"></span> @ 
@@ -108,14 +108,17 @@
           </li>
           <li class="list-group-item">
             <h4 class="list-group-item-heading">2. Browse the tutor list</h4>
-            <p class="list-group-item-text">Tutors that matches your subject are shown in the result list.</p>
+            <p class="list-group-item-text">Tutors that match your subject are shown in the result list.</p>
           </li>
           <li class="list-group-item">
             <h4 class="list-group-item-heading">3. Contact a tutor</h4>
             <p class="list-group-item-text">Click the link next to your tutor&rsquo;s name to send an email with our autocomplete template.</p>
           </li>
+          <li class="list-group-item">
+            <p class="list-group-item-text">Tutors are generally available 8&ndash;10 PM on duty days in their dorm lounges upon request.</p>
+          </li>
           <li id="policies" class="list-group-item">
-            <p class="list-group-item-text">Contact your tutor via email or Peddie Email chat <em>at least a few hours before study hall</em>. &nbsp;Tutors are generally available 8&ndash;10 PM on duty days in their dorm lounges. &nbsp;<em>We are serious about duty days&mdash;if a tutor is not available on a certain day, do not contact him/her.</em></p>
+            <p class="list-group-item-text">Contact your tutor via email or Peddie Email chat before or during study hall on their duty days. &nbsp;Our tutors will be online during study hall for last-minute appointments. &nbsp;<em>If a tutor is not available on a certain day, do not contact him/her.</em></p>
           </li>
         </ul>
       </div>
