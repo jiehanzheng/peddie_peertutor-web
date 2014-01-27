@@ -52,17 +52,9 @@
           <form class="form-inline" role="form" ng-controller="QueryCtrl">
             <select id="subject_select" ng-model="$parent.subject" ng-options="subject.id as subject.name group by subject.subject_area for subject in subjects" class="form-control">
             </select>
-            <select id="dorm_select" ng-model="$parent.dorm" class="form-control">
-              <option value="null">No dorm preference</option>
-              <optgroup label="Sort by distance&hellip;">
-                <option ng-repeat="dorm in dorms" value="{{dorm.id}}">{{dorm.name}}</option>
-              </optgroup>
+            <select id="dorm_select" ng-model="$parent.dorm" ng-options="dorm.id as dorm.name for dorm in dorms" class="form-control">
             </select>
-            <select id="day_select" ng-model="$parent.dutyDay" class="form-control">
-              <optgroup label="Show tutors available on&hellip;">
-                <option value="null">Any day</option>
-                <option ng-repeat="dutyDay in dutyDays" value="{{dutyDay.id}}">{{dutyDay.name}}</option>
-              </optgroup>
+            <select id="day_select" ng-model="$parent.dutyDay" ng-options="dutyDay.id as dutyDay.name for dutyDay in dutyDays" class="form-control">
             </select>
             <a ng-show="subject != 'null' || dorm != 'null' || dutyDay != 'null'" ng-click="clearSelection()" class="btn btn-link">Reset</a>
           </form>

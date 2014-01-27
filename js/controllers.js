@@ -23,8 +23,10 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
       $scope.dutyDaysById[element.id] = element;
     });
 
-    // add a null entry to subjects so that user can choose to view all subjects
-    $scope.subjects.splice(0, 0, {id: 'null', name: 'All subjects'})
+    // add a null entry to subjects and dorms so that user can choose to view all subjects/dorms
+    $scope.subjects.splice(0, 0, {id: 'null', name: 'All subjects'});
+    $scope.dorms.splice(0, 0, {id: 'null', name: 'No dorm preference'});
+    $scope.dutyDays.splice(0, 0, {id: 'null', name: 'Any day'});
 
     // now watch for changes on query conditions
     $scope.$watch(function() {return angular.toJson($scope.queryObject())}, $scope.findTutors);
@@ -53,7 +55,6 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
 
   var restoreSelection = function() {
     try {
-      // var storedSubject, storedDorm;
       if (localStorageService.get('updated_at')) {
         $scope.subject = String(localStorageService.get('subject'));
         $scope.dorm = String(localStorageService.get('dorm'));
@@ -121,13 +122,13 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
       {
         element: '#subject_select',
         title: 'Subject filter',
-        content: 'Show only tutors that can tutor certain subject.',
+        content: 'Show only tutors that can tutor a certain subject.',
         backdrop: true
       },
       {
         element: '#dorm_select',
         title: 'Dorm preference',
-        content: 'Choose your dorm from the dropdown menu, and we will show tutors who live closest to you first.',
+        content: 'Choose your dorm from the dropdown menu, and we will show tutors who live closest to you on the top of the list.',
         backdrop: true
       },
       {
