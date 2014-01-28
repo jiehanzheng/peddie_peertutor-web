@@ -1,6 +1,6 @@
 var peerTutorControllers = angular.module('peerTutorControllers', ['chieffancypants.loadingBar', 'ngAnimate', 'ngSanitize', 'LocalStorageModule']);
 
-peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageService, Subjects, Dorms, DutyDays, Tutors) {
+peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageService, $timeout, Subjects, Dorms, DutyDays, Tutors) {
   $scope.subjects = Subjects.get();
   $scope.dorms = Dorms.get();
   $scope.dutyDays = DutyDays.get();
@@ -186,6 +186,9 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
 
   $scope.setCurrentTutor = function(tutor) {
     $scope.currentTutor = tutor;
+    $timeout(function() {
+      angular.element('#tutor_picture_modal').modal();
+    });
   };
 
 });
@@ -205,9 +208,7 @@ peerTutorControllers.controller('ListCtrl', function ($scope, $timeout) {
 });
 
 peerTutorControllers.controller('TutorPictureCtrl', function ($scope) {
-  $scope.close = function() {
-    $scope.setCurrentTutor(null);
-  };
+
 });
 
 peerTutorControllers.config(function (localStorageServiceProvider) {

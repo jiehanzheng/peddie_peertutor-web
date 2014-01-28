@@ -1,7 +1,7 @@
 Peddie Peer Tutor Lookup System
 ===============================
 
-This is an AngularJS front-end to [peddie_peertutor-java](https://github.com/jiehanzheng/peddie_peertutor-java).  While it is true that everything the Java backend program does can be easily accomplished by AngularJS code as well, we created this infrastructure to provide students in computer science classes at Peddie an opportunity to work on real-life projects with only Java.
+This is an AngularJS front-end to [peddie_peertutor-java](https://github.com/jiehanzheng/peddie_peertutor-java).  While it is true that everything the Java backend program does can be easily accomplished by AngularJS code as well, we created this infrastructure to provide students in computer science classes at Peddie an opportunity to work on real-life projects with only knowledge in Java.
 
 Usage
 -----

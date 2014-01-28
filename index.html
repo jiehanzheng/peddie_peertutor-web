@@ -70,7 +70,7 @@
           </li>
           <li ng-repeat="scoredTutor in tutors" class="tutor list-group-item">
             <div class="media">
-              <a class="pull-left hidden-xs" href="#" target="_self" ng-if="scoredTutor.tutor.has_picture" ng-click="setCurrentTutor(scoredTutor.tutor)" title="Click to enlarge">
+              <a class="pull-left hidden-xs" href="#" ng-if="scoredTutor.tutor.has_picture" ng-click="setCurrentTutor(scoredTutor.tutor)" title="Click to enlarge">
                 <img class="media-object" ng-src="{{scoredTutor.tutor.email_prefix | tutorPicturePath}}" ng-alt="{{scoredTutor.tutor.name}}&rsquo;s picture" style="width: 80px;">
               </a>
               <div class="media-body">
@@ -95,15 +95,6 @@
     </div>
 
     <div id="instructions" class="col-sm-4">
-      <div id="tutor_big_picture" class="panel panel-default" ng-if="currentTutor" ng-controller="TutorPictureCtrl">
-        <div class="panel-body">
-          <img ng-src="{{currentTutor.email_prefix | tutorPicturePath}}" style="max-width: 100%" ng-alt="{{currentTutor.name}}&rsquo;s picture">
-        </div>
-        <div class="panel-footer">
-          {{currentTutor.name}}&rsquo;s picture
-          <button type="button" class="close" aria-hidden="true" ng-click="close()">&times;</button>
-        </div>
-      </div>
       <div class="panel panel-info">
         <div class="panel-heading">The new Peer Tutoring Program</div>
         <div class="panel-body">
@@ -149,6 +140,23 @@
       </p>
     </div>
 
-  </div>
+  </div><!-- /.container -->
+
+  <div id="tutor_picture_modal" class="modal fade" ng-if="currentTutor" ng-controller="TutorPictureCtrl">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">{{currentTutor.name}}&rsquo;s picture</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <img ng-src="{{currentTutor.email_prefix | tutorPicturePath}}" class="col-sm-6 col-sm-offset-3" ng-alt="{{currentTutor.name}}&rsquo;s picture">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.modal -->
+
 </body>
 </html>
