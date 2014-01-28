@@ -70,7 +70,7 @@
           </li>
           <li ng-repeat="scoredTutor in tutors" class="tutor list-group-item">
             <div class="media">
-              <a class="pull-left hidden-xs" href="#" target="_self" ng-if="scoredTutor.tutor.has_picture" ng-click="setCurrentTutor(scoredTutor.tutor)">
+              <a class="pull-left hidden-xs" href="#" target="_self" ng-if="scoredTutor.tutor.has_picture" ng-click="setCurrentTutor(scoredTutor.tutor)" title="Click to enlarge">
                 <img class="media-object" ng-src="{{scoredTutor.tutor.email_prefix | tutorPicturePath}}" ng-alt="{{scoredTutor.tutor.name}}&rsquo;s picture" style="width: 80px;">
               </a>
               <div class="media-body">
