@@ -84,7 +84,8 @@
                     <strong><em ng-bind-html="[scoredTutor.tutor.dorm] | expandAndHighlight:dormsById:[dorm]"></em></strong>
                   </small>
                 </h4>
-                <ul class="list-inline clearfix" ng-bind-html="scoredTutor.tutor.subjects | makeListItemsAndHighlight:subjectsById:[subject]"></ul>
+                <div class="clearfix"></div>
+                <ul class="list-inline" ng-bind-html="scoredTutor.tutor.subjects | makeListItemsAndHighlight:subjectsById:[subject]"></ul>
               </div>
             </div>
           </li>

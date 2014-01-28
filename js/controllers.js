@@ -156,7 +156,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
       {
         element: '#result_list li.tutor:first .mailto-link',
         title: 'Quick mailto: link',
-        content: 'Click this icon to open Gmail and compose an email to this tutor. &nbsp;The tutor&rsquo;s email address, and template of the email will be filled in automatically through this link&mdash;so you only need to edit a few details and hit Send!',
+        content: 'Click this icon to compose an email to this tutor. &nbsp;The tutor&rsquo;s email address, and template of the email will be filled in automatically through this link&mdash;so you only need to edit a few details and hit Send!',
         onShow: ensureNonEmptyList,
         backdrop: true
       },

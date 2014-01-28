@@ -45,7 +45,14 @@ peerTutorFilters.filter('mailtoLink', function () {
 
 peerTutorFilters.filter('gmailHttpsMailto', function() {
   return function(mailtoUrl) {
-    return "https://mail.google.com/a/peddie.org/?extsrc=mailto&url=" + encodeURIComponent(mailtoUrl);
+    if (navigator.platform.match(/^(Win|Mac)/)) {  // on desktop
+      // use Gmail's HTTP GET handler directly
+      return "https://mail.google.com/a/peddie.org/?extsrc=mailto&url=" + encodeURIComponent(mailtoUrl);
+    }
+
+    // for other clients we trust the browser and operating system to make the 
+    // best decision
+    return mailtoUrl;
   };
 });
 
