@@ -13,7 +13,7 @@ peerTutorFilters.filter('expandAndHighlight', function ($sce) {
     });
 
     return $sce.trustAsHtml(processedNames.join('<span class="text-muted">,</span> '));
-  }
+  };
 });
 
 peerTutorFilters.filter('makeListItemsAndHighlight', function ($sce) {
@@ -29,7 +29,7 @@ peerTutorFilters.filter('makeListItemsAndHighlight', function ($sce) {
     });
 
     return $sce.trustAsHtml(processedNames.join(''));
-  }
+  };
 })
 
 peerTutorFilters.filter('mailtoLink', function () {
@@ -40,11 +40,17 @@ peerTutorFilters.filter('mailtoLink', function () {
     mailtoLink += '&body=' + encodeURIComponent('Hi ' + (tutor.name.split(' ')[0]) + ',\n\nWould you be available on [this/next] ' + (dutyDay === undefined ? "[insert weekday]" : dutyDay.name) + ' for some ' + (subject === undefined ? "[insert subject]" : subject.name) + ' help?\n\nThanks a lot!\n\n[insert your name]');
 
     return mailtoLink;
-  }
+  };
 });
 
 peerTutorFilters.filter('gmailHttpsMailto', function() {
   return function(mailtoUrl) {
     return "https://mail.google.com/a/peddie.org/?extsrc=mailto&url=" + encodeURIComponent(mailtoUrl);
-  }
+  };
+});
+
+peerTutorFilters.filter('tutorPicturePath', function() {
+  return function(email_prefix) {
+    return "/images/tutors/" + email_prefix + ".jpg";
+  };
 });

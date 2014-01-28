@@ -25,7 +25,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
 
     // add a null entry to subjects and dorms so that user can choose to view all subjects/dorms
     $scope.subjects.splice(0, 0, {id: 'null', name: 'All subjects'});
-    $scope.dorms.splice(0, 0, {id: 'null', name: 'No dorm preference'});
+    $scope.dorms.splice(0, 0, {id: 'null', name: 'Any location'});
     $scope.dutyDays.splice(0, 0, {id: 'null', name: 'Any day'});
 
     // now watch for changes on query conditions
@@ -90,7 +90,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
   };
 
   var initializeTour = function() {
-    var tour = new Tour({debug: true});
+    var tour = new Tour();
 
     var ensureNonEmptyList = function(tour) {
       if ($scope.tutors !== undefined && $scope.tutors.length)
@@ -184,6 +184,10 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
       $scope.tour.restart();
   };
 
+  $scope.setCurrentTutor = function(tutor) {
+    $scope.currentTutor = tutor;
+  };
+
 });
 
 peerTutorControllers.controller('QueryCtrl', function ($scope) {
@@ -197,6 +201,12 @@ peerTutorControllers.controller('ListCtrl', function ($scope, $timeout) {
     $timeout(function() {
       ga('send', 'event', 'click', 'tutor', tutor.email_prefix);
     }, 100);
+  };
+});
+
+peerTutorControllers.controller('TutorPictureCtrl', function ($scope) {
+  $scope.close = function() {
+    $scope.setCurrentTutor(null);
   };
 });
 

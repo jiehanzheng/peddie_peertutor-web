@@ -28,6 +28,6 @@ popd
 
 # restart java project
 ssh "$REMOTE_HOST" "cd \"$JAVA_FOLDER\"; kill -9 \`cat backend.pid\`" || true
-ssh "$REMOTE_HOST" "cd \"$JAVA_FOLDER\"; nohup /opt/java/jre/bin/java -jar *.jar /tmp > /dev/null 2>&1 < /dev/null &  echo \$! > backend.pid"
+ssh "$REMOTE_HOST" "export PEERTUTOR_WEB_FOLDER=\"\`cd \"$WEB_FOLDER\"; pwd\`\"; cd \"$JAVA_FOLDER\"; nohup /opt/java/jre/bin/java -jar *.jar /tmp > /dev/null 2>&1 < /dev/null &  echo \$! > backend.pid"
 
 echo "Deployed!"

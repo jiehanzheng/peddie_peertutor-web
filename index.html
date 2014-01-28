@@ -6,10 +6,9 @@
   <title>Tutor Lookup &mdash; Peddie Peer Tutoring</title>
 
   <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css">
-  <link rel="stylesheet" type="text/css" href="/bower_components/angular-loading-bar/build/loading-bar.min.css">
 
   <script src="/bower_components/jquery/jquery.min.js"></script>
+  
   <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
 
@@ -24,6 +23,9 @@
   <script src="/js/controllers.js"></script>
   <script src="/js/services.js"></script>
   <script src="/js/filters.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css">
+  <link rel="stylesheet" type="text/css" href="/bower_components/angular-loading-bar/build/loading-bar.min.css">
 
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -52,7 +54,7 @@
           <form class="form-inline" role="form" ng-controller="QueryCtrl">
             <select id="subject_select" ng-model="$parent.subject" ng-options="subject.id as subject.name group by subject.subject_area for subject in subjects" class="form-control">
             </select>
-            <select id="dorm_select" ng-model="$parent.dorm" ng-options="dorm.id as dorm.name for dorm in dorms" class="form-control">
+            <select id="dorm_select" ng-model="$parent.dorm" ng-options="dorm.id as dorm.name group by dorm.type for dorm in dorms" class="form-control">
             </select>
             <select id="day_select" ng-model="$parent.dutyDay" ng-options="dutyDay.id as dutyDay.name for dutyDay in dutyDays" class="form-control">
             </select>
@@ -67,25 +69,41 @@
             </p>
           </li>
           <li ng-repeat="scoredTutor in tutors" class="tutor list-group-item">
-            <h4>
-              {{scoredTutor.tutor.name}} &nbsp;
-              <small style="white-space: nowrap">
-                <a class="mailto-link" ng-href="{{scoredTutor.tutor | mailtoLink:dutyDaysById[dutyDay]:subjectsById[subject] | gmailHttpsMailto}}" ng-click="mailtoClicked(scoredTutor.tutor)" title="Compose an email with our template" target="_blank"><span class="glyphicon glyphicon-envelope"></span> {{scoredTutor.tutor.email_prefix}}</a>
-              </small>
-              <small class="pull-right">
-                <span ng-bind-html="scoredTutor.tutor.duty_days | expandAndHighlight:dutyDaysById:[dutyDay]"></span> @ 
-                <strong><em ng-bind-html="[scoredTutor.tutor.dorm] | expandAndHighlight:dormsById:[dorm]"></em></strong>
-              </small>
-            </h4>
-            <p class="list-group-item-text">
-              <ul class="list-inline" ng-bind-html="scoredTutor.tutor.subjects | makeListItemsAndHighlight:subjectsById:[subject]"></ul>
-            </p>
+            <div class="media">
+              <a class="pull-left hidden-xs" href="#" target="_self" ng-if="scoredTutor.tutor.has_picture" ng-click="setCurrentTutor(scoredTutor.tutor)">
+                <img class="media-object" ng-src="{{scoredTutor.tutor.email_prefix | tutorPicturePath}}" ng-alt="{{scoredTutor.tutor.name}}&rsquo;s picture" style="width: 80px;">
+              </a>
+              <div class="media-body">
+                <h4 class="media-heading">
+                  {{scoredTutor.tutor.name}} &nbsp;
+                  <small style="white-space: nowrap">
+                    <a class="mailto-link" ng-href="{{scoredTutor.tutor | mailtoLink:dutyDaysById[dutyDay]:subjectsById[subject] | gmailHttpsMailto}}" ng-click="mailtoClicked(scoredTutor.tutor)" title="Compose an email with our template" target="_blank"><span class="glyphicon glyphicon-envelope"></span> {{scoredTutor.tutor.email_prefix}}</a>
+                  </small>
+                  <small class="pull-right">
+                    <span ng-bind-html="scoredTutor.tutor.duty_days | expandAndHighlight:dutyDaysById:[dutyDay]"></span> @ 
+                    <strong><em ng-bind-html="[scoredTutor.tutor.dorm] | expandAndHighlight:dormsById:[dorm]"></em></strong>
+                  </small>
+                </h4>
+                <p class="list-group-item-text clearfix">
+                  <ul class="list-inline" ng-bind-html="scoredTutor.tutor.subjects | makeListItemsAndHighlight:subjectsById:[subject]"></ul>
+                </p>
+              </div>
+            </div>
           </li>
         </ul>
       </div>
     </div>
 
     <div id="instructions" class="col-sm-4">
+      <div id="tutor_big_picture" class="panel panel-default" ng-if="currentTutor" ng-controller="TutorPictureCtrl">
+        <div class="panel-body">
+          <img ng-src="{{currentTutor.email_prefix | tutorPicturePath}}" style="max-width: 100%" ng-alt="{{currentTutor.name}}&rsquo;s picture">
+        </div>
+        <div class="panel-footer">
+          {{currentTutor.name}}&rsquo;s picture
+          <button type="button" class="close" aria-hidden="true" ng-click="close()">&times;</button>
+        </div>
+      </div>
       <div class="panel panel-info">
         <div class="panel-heading">The new Peer Tutoring Program</div>
         <div class="panel-body">
@@ -96,7 +114,7 @@
         <ul class="list-group">
           <li id="tour_entry" class="list-group-item hidden-xs">
             <h4 class="list-group-item-heading">
-              <a ng-click="forceStartTour()">
+              <a href="#" ng-click="forceStartTour()">
                 0. Take the 30-second tour
               </a>
             </h4>
