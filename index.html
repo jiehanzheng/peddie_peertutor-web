@@ -81,7 +81,7 @@
                   </small>
                   <small class="pull-right">
                     <span ng-bind-html="scoredTutor.tutor.duty_days | expandAndHighlight:dutyDaysById:[dutyDay]"></span> @ 
-                    <strong><em ng-bind-html="[scoredTutor.tutor.dorm] | expandAndHighlight:dormsById:[dorm]"></em></strong>
+                    <strong><em ng-bind-html="scoredTutor.tutor.dorms | expandAndHighlight:dormsById:[dorm]"></em></strong>
                   </small>
                 </h4>
                 <div class="clearfix"></div>
