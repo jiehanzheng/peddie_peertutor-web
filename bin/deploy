@@ -16,6 +16,7 @@ ssh "$REMOTE_HOST" mkdir -p "$WEB_FOLDER"
 ssh "$REMOTE_HOST" mkdir -p "$JAVA_FOLDER"
 
 # copy web project
+./bin/compile_resources
 rsync -rp --exclude='bin/' --delete --delete-excluded . "$REMOTE_HOST":"$WEB_FOLDER"
 
 # copy java project

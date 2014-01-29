@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [ "${PWD##*/}" != "peddie_peertutor-web" ]; then
+  echo "Please cd to web project directory."
+  exit 1
+fi
+
+set -e
+
+uglifyjs bower_components/jquery/jquery.js \
+         bower_components/bootstrap/dist/js/bootstrap.js \
+         bower_components/bootstrap-tour/build/js/bootstrap-tour.js \
+         bower_components/angular/angular.js \
+         bower_components/angular-resource/angular-resource.js \
+         bower_components/angular-sanitize/angular-sanitize.js \
+         bower_components/angular-animate/angular-animate.js \
+         bower_components/angular-loading-bar/build/loading-bar.js \
+         bower_components/angular-local-storage/angular-local-storage.js \
+         js/app.js \
+         js/controllers.js \
+         js/filters.js \
+         js/services.js \
+         -o js/compiled/app.js \
+         --source-map js/compiled/app.js.map \
+         --source-map-url app.js.map \
+         --source-map-root ../../ \
+         -c unused=false --stats
+
+cat bower_components/bootstrap/dist/css/bootstrap.min.css \
+    bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css \
+    bower_components/angular-loading-bar/build/loading-bar.min.css \
+    > css/app.css
+
+rm -rf css/fonts
+cp -r bower_components/bootstrap/dist/fonts css/fonts
+
+yuicompressor -v css/app.css > css/compiled/app.css
