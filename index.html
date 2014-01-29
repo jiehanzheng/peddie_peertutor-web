@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en" ng-app="peerTutor" ng-controller="AppCtrl">
+<html lang="en" id="ng-app" ng-app="peerTutor">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tutor Lookup &mdash; Peddie Peer Tutoring</title>
 
@@ -18,7 +19,7 @@
     ga('send', 'pageview');
   </script>
 </head>
-<body>
+<body ng-controller="AppCtrl">
   <div class="container">
 
     <div class="page-header">
@@ -27,6 +28,12 @@
         Peer Tutoring Program
       </h1>
     </div>
+
+    <!--[if lt IE 10]>
+      <div class="alert alert-danger">
+        <strong>Doesn&rsquo;t work in IE 9 or earlier!</strong> &nbsp;This website does not work properly in Internet Explorer 9 or earlier. &nbsp;Please update Internet Explorer, or use a modern browser like Google Chrome or Mozilla Firefox to visit this site.
+      </div>
+    <![endif]-->
 
     <div id="main" class="col-sm-8">
       <div class="panel panel-primary">

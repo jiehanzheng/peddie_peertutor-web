@@ -1,6 +1,6 @@
 var peerTutorControllers = angular.module('peerTutorControllers', ['chieffancypants.loadingBar', 'ngAnimate', 'ngSanitize', 'LocalStorageModule']);
 
-peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageService, $timeout, Subjects, Dorms, DutyDays, Tutors) {
+peerTutorControllers.controller('AppCtrl', function ($scope, $log, $q, localStorageService, $timeout, Subjects, Dorms, DutyDays, Tutors) {
   $scope.subjects = Subjects.get();
   $scope.dorms = Dorms.get();
   $scope.dutyDays = DutyDays.get();
@@ -37,7 +37,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
     // this element is visible only if the screen is wide enough
     var tourEntryElement = angular.element('#tour_entry');
     if (tourEntryElement.filter(':visible').length) {
-      console.debug("Width ok.  Initializing tour...");
+      $log.log("Width ok.  Initializing tour...");
       $scope.tour = initializeTour();
       $scope.tour.init();
       $scope.tour.start();
@@ -59,15 +59,15 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
         $scope.subject = String(localStorageService.get('subject'));
         $scope.dorm = String(localStorageService.get('dorm'));
         $scope.dutyDay = "null";  // always set day to null to force user to select a day
-        console.debug("Restored subject = " + $scope.subject + " and dorm = " + $scope.dorm + " from localStorage.");
+        $log.log("Restored subject = " + $scope.subject + " and dorm = " + $scope.dorm + " from localStorage.");
         return true;
       }
     } catch (e) {
-      console.error("Error while restoring from localStorage: " + e);
+      $log.error("Error while restoring from localStorage: " + e);
       localStorageService.clearAll();
     }
 
-    console.debug("Nothing is in localStorage.");
+    $log.log("Nothing is in localStorage.");
     return false;
   };
 
@@ -96,7 +96,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $q, localStorageSer
       if ($scope.tutors !== undefined && $scope.tutors.length)
         return;
 
-      console.debug("Tutor list is empty.  Setting COMPSCI/POTTER_SOUTH as an example and returning a Promise...");
+      $log.log("Tutor list is empty.  Setting COMPSCI/POTTER_SOUTH as an example and returning a Promise...");
 
       $scope.subject = "COMPSCI";
       $scope.dorm = "POTTER_SOUTH";
