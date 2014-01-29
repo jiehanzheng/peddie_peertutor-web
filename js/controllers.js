@@ -188,6 +188,7 @@ peerTutorControllers.controller('AppCtrl', function ($scope, $log, $q, localStor
     $scope.currentTutor = tutor;
     $timeout(function() {
       angular.element('#tutor_picture_modal').modal();
+      ga('send', 'event', 'click', 'tutor_pic', tutor.email_prefix);
     });
   };
 
