@@ -50,11 +50,14 @@
           </form>
         </div>
         <ul id="result_list" class="list-group" ng-controller="ListCtrl">
-          <li ng-hide="tutors.length" class="list-group-item">
+          <li ng-if="tutors.$resolved && !tutors.length" class="list-group-item">
             <h4>No tutors found on your specified day :(</h4>
             <p class="list-group-item-text">
               Perhaps you can try another duty day option? &nbsp;If that didn&rsquo;t help, you may have selected a subject that we don&rsquo;t offer yet&mdash;feel free to talk to our co-presidents <a href="mailto:rjin-14@peddie.org">Richard Jin</a> and/or <a href="mailto:zjiang-14@peddie.org">Ziwen Jiang</a>.
             </p>
+          </li>
+          <li ng-if="!tutors.$resolved" class="list-group-item">
+            <h4>Please wait while your query is being processed&hellip;</h4>
           </li>
           <li ng-repeat="scoredTutor in tutors" class="tutor list-group-item">
             <div class="media">
